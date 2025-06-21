@@ -4,11 +4,13 @@ import { ErrorResponse } from "../utils/common/index.js";
 
 function validateIncomeRequest(Schema) {
   return (req, res, next) => {
+    console.log(req.body);
     try {
       Schema.parse(req.body);
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
+        console.log("Validation Error", error);
         const formatted = error.errors.map((err) => ({
           field: err.path.join("."),
           message: err.message,

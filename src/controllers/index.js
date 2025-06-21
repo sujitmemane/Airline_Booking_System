@@ -1,3 +1,3 @@
 import AirplaneControllers from "./airplane-controller.js";
-
-export { AirplaneControllers };
+import CityController from "./city-controller.js";
+export { AirplaneControllers, CityController };

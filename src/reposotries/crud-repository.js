@@ -1,10 +1,13 @@
+import { StatusCodes } from "http-status-codes";
 import { Logger } from "../config/index.js";
+import AppError from "../utils/errors/app-error.js";
 class CrudRepositoty {
   constructor(model) {
     this.model = model;
   }
   async create(data) {
     const response = await this.model.create(data);
+
     return response;
   }
   async destroy(data) {
@@ -14,19 +17,26 @@ class CrudRepositoty {
           id: data,
         },
       });
+      if (!response) {
+        throw new AppError("Resourse not found", StatusCodes.NOT_FOUND);
+      }
       return response;
     } catch (error) {
       Logger.error("Something went wrong in the Crud repo: Destroy");
-      return error;
+      throw error;
     }
   }
   async get(data) {
     try {
-      const response = await this.model.findByPK(data);
+      const response = await this.model.findByPk(data);
+      if (!response) {
+        throw new AppError("Resourse not found", StatusCodes.NOT_FOUND);
+      }
       return response;
     } catch (error) {
+      console.log(error);
       Logger.error("Something went wrong in the Crud repo:GET");
-      return error;
+      throw error;
     }
   }
 

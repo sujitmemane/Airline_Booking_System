@@ -33,4 +33,39 @@ async function getAirplanes(req, res) {
   }
 }
 
-export default { createAirplane, getAirplanes };
+async function getAirplane(req, res) {
+  const { id } = req.params;
+  if (!id) {
+    ErrorResponse.error = "Airplane Id not found";
+    return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
+  }
+  try {
+    const airplane = await AirplaneService.getAirplane(id);
+    SuccessResponse.data = airplane;
+    SuccessResponse.message = "Airplane fetched";
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    console.log(error);
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+async function destroyAirplane(req, res) {
+  const { id } = req.params;
+  if (!id) {
+    ErrorResponse.message = "Airplane Id is not found";
+    return res.status(StatusCodes.NOT_FOUND).json(ErrorResponse);
+  }
+  try {
+    const airplane = await AirplaneService.destroyAirplane(id);
+    SuccessResponse.data = airplane;
+    SuccessResponse.message = "Airplane destroyed";
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+export default { createAirplane, getAirplanes, getAirplane, destroyAirplane };

@@ -12,5 +12,7 @@ router.post(
 );
 
 router.get("/", AirplaneControllers.getAirplanes);
+router.get("/:id", AirplaneControllers.getAirplane);
+router.delete("/:id", AirplaneControllers.destroyAirplane);
 
 export default router;
