@@ -2,7 +2,12 @@ import { Model } from "sequelize";
 
 export default (sequelize, DataTypes) => {
   class Airplane extends Model {
-    static associate(models) {}
+    static associate(models) {
+      this.hasMany(models.Flights, {
+        foreignKey: "airplaneId",
+        onDelete: "CASCADE",
+      });
+    }
   }
 
   Airplane.init(
